@@ -116,7 +116,6 @@ extra_demo_sources = files([
   'gtkshadertoy.c',
   'gtkshaderstack.c',
   'gskshaderpaintable.c',
-  'hsla.c',
   'puzzlepiece.c',
   'bluroverlay.c',
   'demoimage.c',

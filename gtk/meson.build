@@ -1118,24 +1118,13 @@ darwin_versions = [
 ]
 
 # Library
-libgtk_static = static_library('gtk',
+libgtk = library('gtk',
   sources: [typefuncs, gtk_sources, gtkmarshal_h, gtkprivatetypebuiltins_h, xdp_dbus_generated],
   c_args: gtk_cargs + common_cflags,
   include_directories: [confinc, gdkinc, gskinc, gtkinc],
   dependencies: gtk_deps + [libgtk_css_dep, libgdk_dep, libgsk_dep],
-  link_with: [libgtk_css, libgdk, libgsk ],
-)
-
-libgtk = shared_library('gtk-4',
-  c_args: gtk_cargs + common_cflags,
-  include_directories: [confinc, gdkinc, gskinc, gtkinc],
-  dependencies: gtk_deps + [libgtk_css_dep, libgdk_dep, libgsk_dep],
-  link_whole: [libgtk_static, libgtk_css, libgdk, libgsk ],
+  link_with: [ libgtk_css, libgdk, libgsk ],
   link_args: common_ldflags,
-  soversion: gtk_soversion,
-  version: gtk_library_version,
-  darwin_versions: darwin_versions,
-  gnu_symbol_visibility: 'hidden',
   install: true,
 )
 
@@ -1275,17 +1264,10 @@ if build_gir
   gtk_dep_sources += gtk_gir
 endif
 
-libgtk_dep = declare_dependency(sources: gtk_dep_sources,
+libgtk_dep = declare_dependency(
   include_directories: [confinc, gtkinc],
   dependencies: gtk_deps + [libgtk_css_dep, libgdk_dep, libgsk_dep],
   link_with: libgtk,
-  link_args: common_ldflags,
-)
-
-libgtk_static_dep = declare_dependency(sources: gtk_dep_sources,
-  include_directories: [confinc, gtkinc],
-  dependencies: gtk_deps + [libgtk_css_dep, libgdk_dep, libgsk_dep],
-  link_with: [libgtk_static, libgtk_css, libgdk, libgsk ],
   link_args: common_ldflags,
 )
 
