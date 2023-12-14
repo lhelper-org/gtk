@@ -1264,4 +1264,6 @@ libgtk_dep = declare_dependency(
   link_args: common_ldflags,
 )
 
+libgtk_static_dep = libgtk_dep
+
 subdir('compose')
