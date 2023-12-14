@@ -981,13 +981,6 @@ gtkversion = configure_file(input: 'gtkversion.h.in',
   install_dir: gtk_includedir / 'gtk-4.0/gtk',
 )
 
-gtk_gen_headers = [
-  gtkmarshal_h,
-  gtktypebuiltins_h,
-  gtkprivatetypebuiltins_h,
-  gtkversion,
-]
-
 font_script_language_sources = files([
   'language-names.c',
 ])
