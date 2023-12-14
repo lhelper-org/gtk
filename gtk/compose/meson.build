@@ -1,5 +1,5 @@
 compose_parse = executable('compose-parse',
-  sources: 'compose-parse.c',
+  sources: [ 'compose-parse.c', gtktypebuiltins_h ],
   c_args: gtk_cargs + common_cflags,
   include_directories: [confinc, gtkinc],
   dependencies: libgtk_dep,

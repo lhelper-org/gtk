@@ -5,6 +5,7 @@ constraint_editor_sources = [
   'constraint-view.c',
   'constraint-editor.c',
   'guide-editor.c',
+   gtktypebuiltins_h
 ]
 
 constraint_editor_resources = gnome.compile_resources('constraint_editor_resources',

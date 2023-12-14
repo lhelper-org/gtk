@@ -23,7 +23,7 @@ if win32_enabled
 endif
 
 gtk_tools = [
-  ['gtk4-query-settings', ['gtk-query-settings.c'], [libgtk_dep]],
+  ['gtk4-query-settings', ['gtk-query-settings.c', gtktypebuiltins_h], [libgtk_dep]],
   ['gtk4-builder-tool', ['gtk-builder-tool.c',
                          'gtk-builder-tool-simplify.c',
                          'gtk-builder-tool-validate.c',

@@ -35,6 +35,7 @@ elif cups_dep.found()
       'gtkcupsutils.c',
       'gtkcupssecretsutils.c',
       'gtkprintbackendutils.c',
+       gtktypebuiltins_h
     ],
     c_args: printbackends_args,
     dependencies: [libgtk_dep, cups_dep, colord_dep],
@@ -47,7 +48,7 @@ endif
 # The 'file' print backend cannot be disabled
 print_backends += 'file'
 shared_module('printbackend-file',
-  sources: 'gtkprintbackendfile.c',
+  sources: [ 'gtkprintbackendfile.c', gtktypebuiltins_h ],
   c_args: printbackends_args,
   dependencies: libgtk_dep,
   name_suffix: module_suffix,
