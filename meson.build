@@ -357,7 +357,11 @@ if get_option('default_library') != 'static'
   endif
 endif
 
-common_cflags = cc.get_supported_arguments(test_cflags)
+common_cflags = []
+if get_option('default_library') == 'static'
+  common_cflags += '-DGDK_STATIC_COMPILATION'
+endif
+common_cflags += cc.get_supported_arguments(test_cflags)
 
 common_ldflags = cc.get_supported_link_arguments([
   '-Wl,-Bsymbolic',
