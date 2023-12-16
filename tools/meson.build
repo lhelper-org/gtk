@@ -37,7 +37,7 @@ gtk_tools = [
                         'gtk-rendernode-tool-show.c',
                         'gtk-rendernode-tool-utils.c'], [libgtk_dep] ],
   ['gtk4-update-icon-cache', ['updateiconcache.c', '../gtk/gtkiconcachevalidator.c' ] + extra_update_icon_cache_objs, [ libgtk_dep ] ],
-  ['gtk4-encode-symbolic-svg', ['encodesymbolic.c'], [ libgtk_dep ] ],
+  ['gtk4-encode-symbolic-svg', ['encodesymbolic.c'], [ libgtk_static_dep ] ],
 ]
 
 if os_unix

@@ -137,6 +137,10 @@ extra_demo_sources = files([
   'language-names.c',
 ])
 
+if not gtk_static_build
+  extra_demo_sources += 'hsla.c'
+endif
+
 if os_unix
   demos += files('pagesetup.c')
 endif

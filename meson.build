@@ -63,6 +63,8 @@ add_project_arguments('-D_GNU_SOURCE', language: 'c')
 gtk_debug_cflags = []
 debug = get_option('debug')
 optimization = get_option('optimization')
+gtk_static_build = get_option('default_library') == 'static'
+gtk_shared_build = get_option('default_library') == 'shared'
 if debug
   gtk_debug_cflags += '-DG_ENABLE_DEBUG'
   if optimization in ['0', 'g']
@@ -348,8 +350,11 @@ else
   test_cflags = []
 endif
 
-# Symbol visibility
-if get_option('default_library') != 'static'
+common_cflags = []
+if gtk_static_build
+  common_cflags += '-DGDK_STATIC_COMPILATION'
+else
+  # Symbol visibility
   if os_win32
     cdata.set('DLL_EXPORT', true)
   else
@@ -357,10 +362,6 @@ if get_option('default_library') != 'static'
   endif
 endif
 
-common_cflags = []
-if get_option('default_library') == 'static'
-  common_cflags += '-DGDK_STATIC_COMPILATION'
-endif
 common_cflags += cc.get_supported_arguments(test_cflags)
 
 common_ldflags = cc.get_supported_link_arguments([
