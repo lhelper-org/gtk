@@ -135,6 +135,7 @@ else
 endif
 
 gtk_prefix = get_option('prefix')
+sys_prefix = get_option('system-prefix')
 gtk_includedir = join_paths(gtk_prefix, get_option('includedir'))
 gtk_libdir = join_paths(gtk_prefix, get_option('libdir'))
 gtk_datadir = join_paths(gtk_prefix, get_option('datadir'))
@@ -145,14 +146,23 @@ gtk_applicationsdir = join_paths(gtk_datadir, 'applications')
 gtk_schemasdir = join_paths(gtk_datadir, 'glib-2.0/schemas')
 gtk_appdatadir = join_paths(gtk_datadir, 'metainfo')
 
+sys_localedir = join_paths(sys_prefix, get_option('localedir'))
+sys_datadir = join_paths(sys_prefix, get_option('datadir'))
+sys_libdir = join_paths(sys_prefix, get_option('libdir'))
+if sys_prefix == '/usr'
+  sys_confdir = '/etc'
+else
+  sys_confdir = join_paths(sys_prefix, get_option('sysconfdir'))
+endif
+
 cc = meson.get_compiler('c')
 
 cdata = configuration_data()
 cdata.set_quoted('PACKAGE_VERSION', meson.project_version())
-cdata.set_quoted('GTK_LOCALEDIR', gtk_localedir)
-cdata.set_quoted('GTK_DATADIR', gtk_datadir)
-cdata.set_quoted('GTK_LIBDIR', gtk_libdir)
-cdata.set_quoted('GTK_SYSCONFDIR', gtk_sysconfdir)
+cdata.set_quoted('GTK_LOCALEDIR', sys_localedir)
+cdata.set_quoted('GTK_DATADIR', sys_datadir)
+cdata.set_quoted('GTK_LIBDIR', sys_libdir)
+cdata.set_quoted('GTK_SYSCONFDIR', sys_confdir)
 cdata.set_quoted('GETTEXT_PACKAGE', 'gtk40')
 
 check_headers = [

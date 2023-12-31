@@ -1,5 +1,10 @@
 # GDK backends
 
+option('system-prefix',
+       type: 'string',
+       value: '/usr',
+       description : 'System's root directory for applications')
+
 option('x11-backend',
        type: 'boolean',
        value: true,
