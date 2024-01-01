@@ -25,6 +25,7 @@
 #include <limits.h>
 #include <io.h>
 
+#include "cairo.h"
 #include "gdk.h"
 #include "gdkdebugprivate.h"
 #include "gdkkeysyms.h"
@@ -48,6 +49,8 @@ static gboolean ole_initialized = FALSE;
 void
 _gdk_win32_surfaceing_init (void)
 {
+  cairo_win32_init ();
+
   _gdk_win32_clipdrop_init ();
 
   gdk_dmanipulation_initialize ();
