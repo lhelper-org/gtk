@@ -351,8 +351,11 @@ else
 endif
 
 common_cflags = []
+
+gtk_visibility_cflags = []
 if gtk_static_build
   common_cflags += '-DGDK_STATIC_COMPILATION'
+  gtk_visibility_cflags += '-DGDK_STATIC_COMPILATION'
 else
   # Symbol visibility
   if os_win32
@@ -854,6 +857,7 @@ pkg_config.generate(libgtk,
   name: 'GTK',
   description: 'GTK Graphical UI Library',
   requires: gdk_packages + gsk_packages + gtk_packages,
+  extra_cflags: gtk_visibility_cflags,
   subdirs: ['gtk-@0@'.format(gtk_api_version)],
 )
 meson.override_dependency('gtk4', libgtk_dep)
@@ -866,6 +870,7 @@ foreach backend: enabled_backends
     name: 'GTK',
     description: 'GTK Graphical UI Library',
     requires: ['gtk4', get_variable('@0@_public_deps'.format(backend), [])],
+    extra_cflags: gtk_visibility_cflags,
   )
   meson.override_dependency(pkg, libgtk_dep)
 endforeach
@@ -878,6 +883,7 @@ if os_unix
     description: 'GTK Unix print support',
     requires: 'gtk4',
     subdirs: ['gtk-@0@/unix-print'.format(gtk_api_version)],
+    extra_cflags: gtk_visibility_cflags,
   )
   meson.override_dependency('gtk4-unix-print', libgtk_dep)
 endif
