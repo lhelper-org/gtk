@@ -83,6 +83,12 @@ option('f16c',
        value: 'enabled',
        description: 'Enable F16C fast paths (requires F16C)')
 
+option('intl',
+       type: 'feature',
+       value: 'enabled',
+       description: 'Enable use of system provided intl library'
+)
+
 # Introspection
 
 option('introspection',
