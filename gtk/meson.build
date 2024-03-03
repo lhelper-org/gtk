@@ -1119,7 +1119,7 @@ gtk_tools = []
 
 gtk_query_settings = executable(
   'gtk-query-settings',
-  'gtk-query-settings.c',
+  [ 'gtk-query-settings.c', gtktypebuiltins_h ],
   c_args: gtk_cargs,
   dependencies: libgtk_dep,
   install: true
