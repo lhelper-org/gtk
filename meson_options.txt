@@ -33,6 +33,8 @@ option('man', type: 'boolean', value: 'false',
   description : 'Build man pages for installed tools')
 option('introspection', type: 'boolean', value: 'true',
   description : 'Build introspection data (requires gobject-introspection)')
+option('intl', type: 'feature', value: 'enabled',
+  description: 'Enable use of system provided intl library')
 
 # Demos and binaries
 option('demos', type: 'boolean', value: 'true',
