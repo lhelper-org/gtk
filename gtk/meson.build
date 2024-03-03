@@ -976,17 +976,30 @@ foreach l: immodules
 endforeach
 
 # Library
-libgtk = library('gtk-3',
-                 soversion: gtk_soversion,
-                 version: gtk_library_version,
+libgtk_static = static_library('gtk-3',
                  sources: [typefuncs, gtk_sources, gtkmarshal_h, gtkprivatetypebuiltins_h],
                  c_args: gtk_cargs + common_cflags,
                  include_directories: [confinc, gdkinc, gtkinc],
                  dependencies: gtk_deps + [libgdk_dep] + gtk_included_im_deps,
                  link_with: libgdk,
                  link_args: common_ldflags,
+                 install: not gtk_shared_build)
+
+if gtk_static_build
+libgtk = libgtk_static
+else
+libgtk = library('gtk-3',
+                 soversion: gtk_soversion,
+                 version: gtk_library_version,
+                 c_args: gtk_cargs + common_cflags,
+                 include_directories: [confinc, gdkinc, gtkinc],
+                 dependencies: gtk_deps + [libgdk_dep] + gtk_included_im_deps,
+                 link_whole: libgtk_static,
+                 link_with: libgdk,
+                 link_args: common_ldflags,
                  darwin_versions : gtk_osxversions,
                  install: true)
+endif
 
 # Introspection
 if build_gir
@@ -1025,11 +1038,18 @@ if build_gir
   gtk_dep_sources += gtk_gir
 endif
 
+if gtk_static_build
+libgtk_dep = declare_dependency(include_directories: [confinc, gtkinc],
+                                dependencies: gtk_deps + [libgdk_dep],
+                                link_with: libgtk,
+                                link_args: common_ldflags)
+else
 libgtk_dep = declare_dependency(sources: gtk_dep_sources,
                                 include_directories: [confinc, gtkinc],
                                 dependencies: gtk_deps + [libgdk_dep],
                                 link_with: libgtk,
                                 link_args: common_ldflags)
+endif
 
 foreach lang : [
     'bn',

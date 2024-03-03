@@ -61,6 +61,8 @@ add_project_arguments('-D_GNU_SOURCE', language: 'c')
 gtk_debug_cflags = []
 debug = get_option('debug')
 optimization = get_option('optimization')
+gtk_static_build = get_option('default_library') == 'static'
+gtk_shared_build = get_option('default_library') == 'shared'
 if debug
   gtk_debug_cflags += '-DG_ENABLE_DEBUG'
   if optimization in ['0', 'g']
@@ -323,7 +325,7 @@ endif
 common_cflags = cc.get_supported_arguments(test_cflags)
 
 # Symbol visibility
-if get_option('default_library') != 'static'
+if not gtk_static_build
   if os_win32
     cdata.set('DLL_EXPORT', true)
     if cc.get_id() == 'msvc'
@@ -907,7 +909,6 @@ elif cc.get_id() == 'msvc' and cairogobj_dep.found()
 endif
 
 gdk_packages += cairo_packages
-pkgconf.set('GDK_PACKAGES', gdk_packages)
 
 if have_gio_unix
   gio_packages = ['gio-unix-2.0', glib_req]
@@ -915,10 +916,20 @@ else
   gio_packages = ['gio-2.0', glib_req]
 endif
 
+gdk_private_packages = ' '.join(gio_packages + x11_pkgs + wayland_pkgs + cairo_backends +
+                     ['epoxy', epoxy_req] + cloudproviders_packages +
+                     ['fribidi', fribidi_req])
+
+if gtk_static_build
+pkgconf.set('GDK_PACKAGES', gdk_packages + ' ' + gdk_private_packages)
+pkgconf.set('GDK_PRIVATE_PACKAGES', '')
+else
+pkgconf.set('GDK_PACKAGES', gdk_packages)
 pkgconf.set('GDK_PRIVATE_PACKAGES',
             ' '.join(gio_packages + x11_pkgs + wayland_pkgs + cairo_backends +
                      ['epoxy', epoxy_req] + cloudproviders_packages +
                      ['fribidi', fribidi_req]))
+endif
 
 gtk_packages = ' '.join([
     atk_dep.name(), atk_req,
@@ -926,7 +937,6 @@ gtk_packages = ' '.join([
     pixbuf_dep.name(), gdk_pixbuf_req,
     'gio-2.0', glib_req,
 ])
-pkgconf.set('GTK_PACKAGES', gtk_packages)
 
 # Requires.private
 pc_gdk_extra_libs += cairo_libs
@@ -937,7 +947,13 @@ if wayland_enabled or x11_enabled
 endif
 gtk_private_packages += gio_packages
 
+if gtk_static_build
+pkgconf.set('GTK_PACKAGES', gtk_packages + ' ' + ' '.join(gtk_private_packages))
+pkgconf.set('GTK_PRIVATE_PACKAGES', '')
+else
+pkgconf.set('GTK_PACKAGES', gtk_packages)
 pkgconf.set('GTK_PRIVATE_PACKAGES', ' '.join(gtk_private_packages))
+endif
 
 pkgconf.set('GDK_EXTRA_LIBS', ' '.join(pc_gdk_extra_libs))
 pkgconf.set('GSK_EXTRA_LIBS', '')
